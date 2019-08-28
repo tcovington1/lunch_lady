@@ -1,8 +1,8 @@
 # ? Basic Objectives:
-#todo - the user chooses from a list of main dishes
-#todo - the user chooses 2 side dish items
-#todo - computer repeats users order
-#todo - computer totals lunch items and displays total
+#√ - the user chooses from a list of main dishes
+#√ - the user chooses 2 side dish items
+#√ - computer repeats users order
+#√ - computer totals lunch items and displays total
 
 # BONUS
 
@@ -34,6 +34,7 @@
 #     puts “WOOF”
 #   end
 # end
+require 'colorize'
 
 @main_dishes = [
   {id: 1, name: "Meatloaf", price: 5},
@@ -50,34 +51,36 @@
 
 class Meal
   attr_accessor :main_dish, :main_price, :side1, :side1_price, :side2, :side2_price
-  def initialize (main_dish, main_price, side1, side1_price, side2, side2_price)
-    @main_dish = main_dish
+  def initialize (main, main_price, side1, side1_price, side2, side2_price)
+    @main = main
     @main_price = main_price
-    @side1 = side_dish
-    @side1_price = side_price
-    @side2 = side_dish
-    @side2_price = side_price
+    @side1 = side1
+    @side1_price = side1_price
+    @side2 = side2
+    @side2_price = side2_price
   end
 
   def show_order
-
+    print "Your order consists of: "
+    puts "#{@main}, #{@side1}, #{@side2}".colorize(:light_blue)
   end
 
     def checkout
-    puts "Your order consists of: #{@main_dish} #{@side1} #{@side2}"
-    puts ""
-    puts "Your order total is: $#{}"
+      @total = @main_price + @side1_price + @side2_price
+    puts "Your order total is: $#{@total}".colorize(:green)
+    puts "Thank you for ordering at the Lunch Lady"
    end
 
 end
 
 def main_menu
-  # separator
-  puts "What main dish would you like?"
+  separator
+  puts "Welcome, I'm the Lunch Lady"
+  puts "What main dish would you like?".colorize(:magenta)
   @main_dishes.each do |main|
   puts"  #{main[:id]}) #{main[:name]} $#{main[:price]}"
   end
-  @main_choice = gets.strip
+  @main_choice = gets.strip.to_i
   main_choice
 end
 
@@ -91,34 +94,72 @@ end
         next
       end
       if @main_choice = '' && @main_price = 0
-        puts "Please enter a valid option"
-        main_dish
+        puts "Please enter a valid option".colorize(:red)
+        main_menu
     end
-    side_dish1
   end
+  side_dish1
 end
 
    def side_dish1
-    puts "What side dish would you like?"
-    puts"  1: Carrots($1.75)"
-    puts"  2: Mystery Yogurt($1.00)"
-    puts"  3: Beef Jerkey($0.50)"
+    puts "Choose your first side dish:".colorize(:magenta)
+    @side_dishes.each do |side|
+      puts "  #{side[:id]}) #{side[:name]} $#{side[:price]}"
+    end
+    @side1_choice = gets.strip.to_i
+    side1_choice
    end
 
-  #  def side_dish2
-  #   separator
-  #   puts "What side dish would you like?"
-  #   puts"  1: Carrots($1.75)"
-  #   puts"  2: Mystery Yogurt($1.00)"
-  #   puts"  3: Beef Jerkey($0.50)"
-  # end
+   def side_dish2
+    puts "Choose your second side dish:".colorize(:magenta)
+    @side_dishes.each do |side|
+      puts "  #{side[:id]}) #{side[:name]} $#{side[:price]}"
+    end
+    @side2_choice = gets.strip.to_i
+    side2_choice
+   end
 
+  def side1_choice
+    @side_dishes.each do |side|
+      if @side1_choice == side[:id]
+        @side1 = side[:name]
+        @side1_price = side[:price]
+        break
+      else
+        next
+      end
+      if @side1_choice = '' && @side1_price = 0
+        puts "Please enter a valid option"
+        side1_dish
+    end
+  end
+  side_dish2
+end
+  def side2_choice
+    @side_dishes.each do |side|
+      if @side2_choice == side[:id]
+        @side2 = side[:name]
+        @side2_price = side[:price]
+        break
+      else
+        next
+      end
+      if @side2_choice = '' && @side2_price = 0
+        puts "Please enter a valid option"
+        side2_dish
+    end
+  end
+  view_order
+end
 
+def separator
+ puts ' '
+end
 
   def view_order
-    @mail1 = Meal.new(@main, @main_price, @side1, @side1_price, @side2, @side2_price)
-    @meal.show_order
-    @meal.checkout
+    @meal1 = Meal.new(@main, @main_price, @side1, @side1_price, @side2, @side2_price)
+    @meal1.show_order
+    @meal1.checkout
 
   end
 
